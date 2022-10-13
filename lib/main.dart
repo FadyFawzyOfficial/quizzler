@@ -35,12 +35,15 @@ class _QuizScreenState extends State<QuizScreen> {
     'A slug\'s blood is green.'
   ];
 
+  final answers = [
+    false,
+    true,
+    true,
+  ];
+
   int questionNumber = 0;
 
-  List<AnswerIcon> scoreKeeper = [
-    const AnswerIcon(isTrue: true),
-    const AnswerIcon(isTrue: false),
-  ];
+  List<AnswerIcon> scoreKeeper = [];
 
   @override
   Widget build(BuildContext context) {
@@ -67,16 +70,16 @@ class _QuizScreenState extends State<QuizScreen> {
           label: 'True',
           color: Colors.green,
           onPressed: () => setState(() {
+            scoreKeeper.add(AnswerIcon(isTrue: answers[questionNumber]));
             questionNumber++;
-            scoreKeeper.add(const AnswerIcon(isTrue: true));
           }),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
           onPressed: () => setState(() {
+            scoreKeeper.add(AnswerIcon(isTrue: !answers[questionNumber]));
             questionNumber++;
-            scoreKeeper.add(const AnswerIcon(isTrue: false));
           }),
         ),
         Row(
