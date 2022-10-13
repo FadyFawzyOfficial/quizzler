@@ -29,6 +29,14 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  final questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.'
+  ];
+
+  int questionNumber = 0;
+
   List<AnswerIcon> scoreKeeper = [
     const AnswerIcon(isTrue: true),
     const AnswerIcon(isTrue: false),
@@ -39,15 +47,15 @@ class _QuizScreenState extends State<QuizScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Expanded(
+        Expanded(
           flex: 5,
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                'This is where the question text will go.',
+                questions[questionNumber],
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                 ),
@@ -58,14 +66,18 @@ class _QuizScreenState extends State<QuizScreen> {
         AnswerButton(
           label: 'True',
           color: Colors.green,
-          onPressed: () =>
-              setState(() => scoreKeeper.add(const AnswerIcon(isTrue: true))),
+          onPressed: () => setState(() {
+            questionNumber++;
+            scoreKeeper.add(const AnswerIcon(isTrue: true));
+          }),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
-          onPressed: () =>
-              setState(() => scoreKeeper.add(const AnswerIcon(isTrue: false))),
+          onPressed: () => setState(() {
+            questionNumber++;
+            scoreKeeper.add(const AnswerIcon(isTrue: false));
+          }),
         ),
         Row(
           children: scoreKeeper,
