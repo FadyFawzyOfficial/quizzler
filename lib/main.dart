@@ -29,16 +29,21 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  List<AnswerIcon> scoreKeeper = [
+    const AnswerIcon(isTrue: true),
+    const AnswerIcon(isTrue: false),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
-        Expanded(
+      children: [
+        const Expanded(
           flex: 5,
           child: Center(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(vertical: 16),
               child: Text(
                 'This is where the question text will go.',
                 textAlign: TextAlign.center,
@@ -53,12 +58,18 @@ class _QuizScreenState extends State<QuizScreen> {
         AnswerButton(
           label: 'True',
           color: Colors.green,
+          onPressed: () =>
+              setState(() => scoreKeeper.add(const AnswerIcon(isTrue: true))),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
+          onPressed: () =>
+              setState(() => scoreKeeper.add(const AnswerIcon(isTrue: false))),
         ),
-        // TODO: Add a Row here as your score keeper
+        Row(
+          children: scoreKeeper,
+        ),
       ],
     );
   }
@@ -67,27 +78,45 @@ class _QuizScreenState extends State<QuizScreen> {
 class AnswerButton extends StatelessWidget {
   final String label;
   final Color color;
+  final void Function() onPressed;
 
   const AnswerButton({
     Key? key,
     required this.label,
     required this.color,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: color,
             textStyle: const TextStyle(fontSize: 20),
           ),
+          onPressed: onPressed,
           child: Text(label),
-          onPressed: () {},
         ),
       ),
     );
   }
+}
+
+class AnswerIcon extends StatelessWidget {
+  final bool isTrue;
+  const AnswerIcon({Key? key, required this.isTrue}) : super(key: key);
+
+  @override
+  Icon build(BuildContext context) => isTrue
+      ? const Icon(
+          Icons.check_rounded,
+          color: Colors.green,
+        )
+      : const Icon(
+          Icons.close_rounded,
+          color: Colors.red,
+        );
 }
