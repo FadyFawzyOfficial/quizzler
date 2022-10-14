@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quizzler/question.dart';
+
+import 'quiz_brain.dart';
 
 void main() => runApp(const Quizzler());
 
@@ -30,23 +31,8 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  final questionsBank = [
-    Question(
-      questionText: 'You can lead a cow down stairs but not up stairs.',
-      questionAnswer: false,
-    ),
-    Question(
-      questionText: 'Approximately one quarter of human bones are in the feet.',
-      questionAnswer: true,
-    ),
-    Question(
-      questionText: 'A slug\'s blood is green.',
-      questionAnswer: true,
-    ),
-  ];
-
   int questionNumber = 0;
-
+  QuizBrain quizBrain = QuizBrain();
   List<AnswerIcon> scoreKeeper = [];
 
   @override
@@ -60,7 +46,7 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                questionsBank[questionNumber].questionText,
+                quizBrain.questionsBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
@@ -74,14 +60,16 @@ class _QuizScreenState extends State<QuizScreen> {
           label: 'True',
           color: Colors.green,
           onPressed: () => answerQuestion(
-            questionAnswer: questionsBank[questionNumber].questionAnswer,
+            questionAnswer:
+                quizBrain.questionsBank[questionNumber].questionAnswer,
           ),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
           onPressed: () => answerQuestion(
-            questionAnswer: !questionsBank[questionNumber].questionAnswer,
+            questionAnswer:
+                !quizBrain.questionsBank[questionNumber].questionAnswer,
           ),
         ),
         Row(
