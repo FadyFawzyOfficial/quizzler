@@ -1,7 +1,9 @@
 import 'package:quizzler/question.dart';
 
 class QuizBrain {
-  final questionsBank = [
+  int _questionNumber = 0;
+
+  final _questionsBank = [
     Question('A slug\'s blood is green.', true),
     Question('Google was originally called \"Backrub\".', true),
     Question('Some cats are actually allergic to humans', true),
@@ -34,4 +36,12 @@ class QuizBrain {
       true,
     ),
   ];
+
+  void getNextQuestion() {
+    if (_questionNumber < _questionsBank.length - 1) _questionNumber++;
+  }
+
+  String get questionText => _questionsBank[_questionNumber].questionText;
+
+  bool get questionAnswer => _questionsBank[_questionNumber].questionAnswer;
 }

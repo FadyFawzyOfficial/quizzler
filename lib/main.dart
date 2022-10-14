@@ -31,7 +31,6 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  int questionNumber = 0;
   QuizBrain quizBrain = QuizBrain();
   List<AnswerIcon> scoreKeeper = [];
 
@@ -46,7 +45,7 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                quizBrain.questionsBank[questionNumber].questionText,
+                quizBrain.questionText,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
@@ -60,16 +59,14 @@ class _QuizScreenState extends State<QuizScreen> {
           label: 'True',
           color: Colors.green,
           onPressed: () => answerQuestion(
-            questionAnswer:
-                quizBrain.questionsBank[questionNumber].questionAnswer,
+            questionAnswer: quizBrain.questionAnswer,
           ),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
           onPressed: () => answerQuestion(
-            questionAnswer:
-                !quizBrain.questionsBank[questionNumber].questionAnswer,
+            questionAnswer: !quizBrain.questionAnswer,
           ),
         ),
         Row(
@@ -82,7 +79,7 @@ class _QuizScreenState extends State<QuizScreen> {
   void answerQuestion({required bool questionAnswer}) {
     setState(() {
       scoreKeeper.add(AnswerIcon(isTrue: questionAnswer));
-      questionNumber++;
+      quizBrain.getNextQuestion();
     });
   }
 }
