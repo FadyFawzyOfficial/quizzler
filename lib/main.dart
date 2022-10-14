@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/question.dart';
 
 void main() => runApp(const Quizzler());
 
@@ -29,16 +30,19 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  final questions = [
-    'You can lead a cow down stairs but not up stairs.',
-    'Approximately one quarter of human bones are in the feet.',
-    'A slug\'s blood is green.'
-  ];
-
-  final answers = [
-    false,
-    true,
-    true,
+  final questionsBank = [
+    Question(
+      questionText: 'You can lead a cow down stairs but not up stairs.',
+      questionAnswer: false,
+    ),
+    Question(
+      questionText: 'Approximately one quarter of human bones are in the feet.',
+      questionAnswer: true,
+    ),
+    Question(
+      questionText: 'A slug\'s blood is green.',
+      questionAnswer: true,
+    ),
   ];
 
   int questionNumber = 0;
@@ -56,7 +60,7 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                questions[questionNumber],
+                questionsBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.white,
@@ -69,24 +73,29 @@ class _QuizScreenState extends State<QuizScreen> {
         AnswerButton(
           label: 'True',
           color: Colors.green,
-          onPressed: () => setState(() {
-            scoreKeeper.add(AnswerIcon(isTrue: answers[questionNumber]));
-            questionNumber++;
-          }),
+          onPressed: () => answerQuestion(
+            questionAnswer: questionsBank[questionNumber].questionAnswer,
+          ),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
-          onPressed: () => setState(() {
-            scoreKeeper.add(AnswerIcon(isTrue: !answers[questionNumber]));
-            questionNumber++;
-          }),
+          onPressed: () => answerQuestion(
+            questionAnswer: !questionsBank[questionNumber].questionAnswer,
+          ),
         ),
         Row(
           children: scoreKeeper,
         ),
       ],
     );
+  }
+
+  void answerQuestion({required bool questionAnswer}) {
+    setState(() {
+      scoreKeeper.add(AnswerIcon(isTrue: questionAnswer));
+      questionNumber++;
+    });
   }
 }
 
