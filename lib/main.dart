@@ -58,16 +58,12 @@ class _QuizScreenState extends State<QuizScreen> {
         AnswerButton(
           label: 'True',
           color: Colors.green,
-          onPressed: () => answerQuestion(
-            questionAnswer: quizBrain.questionAnswer,
-          ),
+          onPressed: () => checkAnswer(userPickedAnswer: true),
         ),
         AnswerButton(
           label: 'False',
           color: Colors.red,
-          onPressed: () => answerQuestion(
-            questionAnswer: !quizBrain.questionAnswer,
-          ),
+          onPressed: () => checkAnswer(userPickedAnswer: false),
         ),
         Row(
           children: scoreKeeper,
@@ -76,9 +72,13 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  void answerQuestion({required bool questionAnswer}) {
+  void checkAnswer({required bool userPickedAnswer}) {
     setState(() {
-      scoreKeeper.add(AnswerIcon(isTrue: questionAnswer));
+      scoreKeeper.add(
+        AnswerIcon(
+          isCorrectAnswer: userPickedAnswer == quizBrain.questionAnswer,
+        ),
+      );
       quizBrain.getNextQuestion();
     });
   }
@@ -115,11 +115,11 @@ class AnswerButton extends StatelessWidget {
 }
 
 class AnswerIcon extends StatelessWidget {
-  final bool isTrue;
-  const AnswerIcon({Key? key, required this.isTrue}) : super(key: key);
+  final bool isCorrectAnswer;
+  const AnswerIcon({Key? key, required this.isCorrectAnswer}) : super(key: key);
 
   @override
-  Icon build(BuildContext context) => isTrue
+  Icon build(BuildContext context) => isCorrectAnswer
       ? const Icon(
           Icons.check_rounded,
           color: Colors.green,
