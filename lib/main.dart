@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+// COMPLETED: Step 2 - Import the rFlutter_Alert package here.
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 void main() => runApp(const Quizzler());
@@ -74,12 +75,28 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void checkAnswer({required bool userPickedAnswer}) {
     setState(() {
-      scoreKeeper.add(
-        AnswerIcon(
-          isCorrectAnswer: userPickedAnswer == quizBrain.questionAnswer,
-        ),
-      );
-      quizBrain.getNextQuestion();
+      // COMPLETED: Step 4 - Use IF/ELSE to check if we've reached the end of the quiz. If true, execute Part A, B, C, D.
+      if (quizBrain.isFinished) {
+        // COMPLETED: Step 4 Part A - show an alert using rFlutter_alert (remember to read the docs for the package!)
+        // HINT! Step 4 Part B is in the quiz_brain.dart
+        Alert(
+          context: context,
+          title: 'Finished!',
+          desc: 'You\'ve reached the end of the quiz.',
+        ).show();
+        // COMPLETED: Step 4 Part C - reset the questionNumber,
+        quizBrain.reset();
+        // COMPLETED: Step 4 Part D - empty out the scoreKeeper.
+        scoreKeeper.clear();
+      } else {
+        // COMPLETED: Step 5 - If we've not reached the end, ELSE do the answer checking steps below 👇
+        scoreKeeper.add(
+          AnswerIcon(
+            isCorrectAnswer: userPickedAnswer == quizBrain.questionAnswer,
+          ),
+        );
+        quizBrain.getNextQuestion();
+      }
     });
   }
 }
